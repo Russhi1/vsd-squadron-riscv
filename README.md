@@ -1,64 +1,39 @@
-# VSD Squadron Mini — Week 1
+# VSD Squadron Mini — RISC-V Internship Repository
 
-Bare-metal RISC-V programming using PlatformIO and the VSD Squadron Mini.
+A complete embedded systems learning and development repository documenting weekly progress during my RISC-V internship using the VSD Squadron Mini and PlatformIO.
 
-## Objectives
-- Set up PlatformIO toolchain
-- Verify board programming
-- GPIO register programming
-- LED blinking
+## Repository Structure
+
+## Week 1 — Board Bring-up and GPIO
+- Toolchain setup
+- Firmware verification
+- LED blink
 - Digital input handling
+- Register-level GPIO programming
 
-## Hardware
-- VSD Squadron Mini
-- CH32V003F4U6 (RISC-V MCU)
+## Week 2 — UART and Serial Communication
+- Serial transmission
+- Debugging through UART
+- Register-level USART control
 
-## Software
-- VS Code
+## Week 3 — Timers and PWM
+- Hardware timers
+- PWM generation
+- Timing precision control
+
+## Documentation
+Contains:
+- Setup guides
+- Board notes
+- Datasheets
+- Debugging references
+
+## Tech Stack
 - PlatformIO
 - NoneOS-SDK
-
-## Implementations
-
-### 1. Basic Firmware Verification
-Minimal startup program to verify compilation and upload.
-
-### 2. LED Blink
-Direct register-level GPIO output control.
-
-Concepts:
-- Clock enable
-- GPIO configuration
-- Register bit manipulation
-- Software delay loops
-
-### 3. Digital Input Read
-Reads GPIO input and controls LED state.
-
-Concepts:
-- Input configuration
-- Reading INDR register
-- Conditional hardware control
-
-## Key Learnings
-- Bare-metal embedded programming
-- Register-level hardware control
-- GPIO input/output configuration
-- Firmware flashing workflow
-
-## Build
-
-```bash
-pio run
-```
-
-## Upload
-
-```bash
-pio run --target upload
-```
+- CH32V003 RISC-V
+- Bare-metal Embedded C
 
 ## Author
-
 Rushil Rai
-Physics Undergraduate | RISC-V Embedded Systems Intern
+Physics Undergraduate | Embedded Systems & RISC-V Intern
