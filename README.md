@@ -11,16 +11,6 @@ A complete embedded systems learning and development repository documenting week
 - Digital input handling
 - Register-level GPIO programming
 
-## Week 2 — UART and Serial Communication
-- Serial transmission
-- Debugging through UART
-- Register-level USART control
-
-## Week 3 — Timers and PWM
-- Hardware timers
-- PWM generation
-- Timing precision control
-
 ## Documentation
 Contains:
 - Setup guides
