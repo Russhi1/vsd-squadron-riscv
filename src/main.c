@@ -1,20 +1,24 @@
-#include <ch32v00x.h>
+#include <stdio.h>
+#include "gpio.h"
 
-void delay(void)
-{
-    for(volatile int i = 0; i < 5000000; i++);
-}
+#define LED_PIN 5
+#define BTN_PIN 3
 
 int main(void)
 {
-    RCC->APB2PCENR |= RCC_APB2Periph_GPIOD;
+    printf("Starting firmware \n");
 
-    GPIOD->CFGLR &= ~(0xF << (4 * 6));
-    GPIOD->CFGLR |=  (0x3 << (4 * 6));
+    gpio_init(LED_PIN, GPIO_OUTPUT);
+    gpio_init(BTN_PIN, GPIO_INPUT);
 
-    while(1)
-    {
-        GPIOD->OUTDR ^= (1 << 6);
-        delay();
-    }
+    gpio_write(LED_PIN, 1);
+
+    int button_state = gpio_read(BTN_PIN);
+    printf("Button state: %d\n", button_state);
+
+    gpio_write(LED_PIN, 0);
+
+    printf("Firmware application finished\n");
+
+    return 0;
 }
