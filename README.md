@@ -26,4 +26,4 @@ Contains:
 
 ## Author
 Rushil Rai
-Physics Undergraduate | Embedded Systems & RISC-V Intern
+Physics Undergraduate 
