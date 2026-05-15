@@ -1,24 +1,49 @@
-#include <stdio.h>
+/*
+ * week2/counter/main.c
+ * Counter — LED turns ON when counter is even, OFF when odd
+ *
+ * This demonstrates using a variable to track state and
+ * control GPIO output based on logic (even/odd check).
+ *
+ * Original bare-metal version used direct register writes.
+ * Library version: same behaviour, cleaner code.
+ */
+
+#include <ch32v00x.h>
 #include "gpio.h"
 
-#define LED_PIN 5
-#define BTN_PIN 3
+void delay(void)
+{
+    for (volatile int i = 0; i < 1250000; i++);
+}
 
 int main(void)
 {
-    printf("Starting firmware \n");
+    unsigned int counter = 0;
 
-    gpio_init(LED_PIN, GPIO_OUTPUT);
-    gpio_init(BTN_PIN, GPIO_INPUT);
+    /* Configure onboard LED (PD6) as output */
+    gpio_init(PORT_D, LED_PIN, GPIO_OUTPUT);
 
-    gpio_write(LED_PIN, 1);
+    while (1)
+    {
+        counter++;
 
-    int button_state = gpio_read(BTN_PIN);
-    printf("Button state: %d\n", button_state);
+        /*
+         * Even counter → LED ON
+         * Odd  counter → LED OFF
+         *
+         * This is the same logic as the original, just expressed
+         * with gpio_write instead of OUTDR register manipulation.
+         */
+        if (counter % 2 == 0)
+        {
+            gpio_write(PORT_D, LED_PIN, GPIO_HIGH);  /* even → LED ON  */
+        }
+        else
+        {
+            gpio_write(PORT_D, LED_PIN, GPIO_LOW);   /* odd  → LED OFF */
+        }
 
-    gpio_write(LED_PIN, 0);
-
-    printf("Firmware application finished\n");
-
-    return 0;
+        delay();
+    }
 }

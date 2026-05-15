@@ -1,30 +1,47 @@
+/*
+ * week2/counter/main.c
+ * Counter — LED turns ON when counter is even, OFF when odd
+ *
+ * This demonstrates using a variable to track state and
+ * control GPIO output based on logic (even/odd check).
+ *
+ * Original bare-metal version used direct register writes.
+ * Library version: same behaviour, cleaner code.
+ */
+
 #include <ch32v00x.h>
+#include "gpio.h"
 
 void delay(void)
 {
-    for(volatile int i = 0; i < 1250000; i++);
+    for (volatile int i = 0; i < 1250000; i++);
 }
 
 int main(void)
 {
     unsigned int counter = 0;
 
-    RCC->APB2PCENR |= RCC_APB2Periph_GPIOD;
+    /* Configure onboard LED (PD6) as output */
+    gpio_init(PORT_D, LED_PIN, GPIO_OUTPUT);
 
-    GPIOD->CFGLR &= ~(0xF << (4 * 6));
-    GPIOD->CFGLR |=  (0x3 << (4 * 6));
-
-    while(1)
+    while (1)
     {
         counter++;
 
-        if(counter % 2 == 0)
+        /*
+         * Even counter → LED ON
+         * Odd  counter → LED OFF
+         *
+         * This is the same logic as the original, just expressed
+         * with gpio_write instead of OUTDR register manipulation.
+         */
+        if (counter % 2 == 0)
         {
-            GPIOD->OUTDR |= (1 << 6);    // LED ON
+            gpio_write(PORT_D, LED_PIN, GPIO_HIGH);  /* even → LED ON  */
         }
         else
         {
-            GPIOD->OUTDR &= ~(1 << 6);   // LED OFF
+            gpio_write(PORT_D, LED_PIN, GPIO_LOW);   /* odd  → LED OFF */
         }
 
         delay();

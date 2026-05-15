@@ -1,41 +1,52 @@
+/*
+ * week1/input_read/main.c
+ * Digital Input — read a push button, control the LED
+ *
+ * Original bare-metal version used:
+ *   GPIO_InitTypeDef structs
+ *   GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_0)
+ *   GPIO_WriteBit(GPIOD, GPIO_Pin_6, ...)
+ *
+ * Library version: same behaviour, much cleaner code.
+ *
+ * Wiring:
+ *   PD6 → onboard LED
+ *   PD0 → push button (other side to GND)
+ *
+ * Behaviour:
+ *   Button pressed  → LED ON
+ *   Button released → LED OFF
+ */
+
 #include <ch32v00x.h>
-
-void GPIO_Config(void)
-{
-    GPIO_InitTypeDef GPIO_InitStructure;
-
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
-
-    // PD6 as output for built-in LED
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOD, &GPIO_InitStructure);
-
-    // PD0 as input for push button
-    // External 10k pull-down resistor is used
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    GPIO_Init(GPIOD, &GPIO_InitStructure);
-}
+#include "gpio.h"
 
 int main(void)
 {
-    SystemCoreClockUpdate();
+    /* PD6 = LED output */
+    gpio_init(PORT_D, LED_PIN, GPIO_OUTPUT);
 
-    GPIO_Config();
+    /*
+     * PD0 = button input with pull-up
+     *
+     * Why GPIO_INPUT_PU?
+     * The original code used GPIO_Mode_IN_FLOATING with an external
+     * 10k pull-down resistor on the board. GPIO_INPUT_PU uses the
+     * chip's built-in pull-up instead — no external resistor needed.
+     * Button unpressed = pin reads HIGH (1)
+     * Button pressed   = pin pulled to GND, reads LOW (0)
+     */
+    gpio_init(PORT_D, 0, GPIO_INPUT_PU);
 
-    while(1)
+    while (1)
     {
-        if(GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_0) == SET)
+        if (gpio_read(PORT_D, 0) == GPIO_LOW)
         {
-            // Button pressed -> LED ON
-            GPIO_WriteBit(GPIOD, GPIO_Pin_6, RESET);
+            gpio_write(PORT_D, LED_PIN, GPIO_HIGH);  /* button pressed  → LED ON  */
         }
         else
         {
-            // Button released -> LED OFF
-            GPIO_WriteBit(GPIOD, GPIO_Pin_6, SET);
+            gpio_write(PORT_D, LED_PIN, GPIO_LOW);   /* button released → LED OFF */
         }
     }
 }
