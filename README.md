@@ -77,24 +77,7 @@ uart_print_int(-42);        // send signed integer
 
 <!-- Insert output image here -->
 
----
-
-## Task 2 — Week 1: Board Bring-up and GPIO
-
-Three exercises covering GPIO fundamentals in bare-metal C.
-
-- **`broad_bringup/`** — first firmware flashed. Turns LED ON to confirm the board boots.
-- **`led_blink/`** — toggles onboard LED (PD6) with a blocking delay. Introduces `CFGLR`, `OUTDR`, and clock enable registers.
-- **`input_read/`** — reads a push button on PD0, controls LED on PD6. Introduces `INDR` and input pin configuration.
-
----
-
-## Week 2 — Timing Patterns
-
-- **`blocking_delay/`** — LED blink with busy-wait loop. CPU is stuck during delay.
-- **`counter/`** — LED toggles based on even/odd counter value.
-- **`noblocking_led/`** — LED blink using SysTick interrupt and `millis` counter. CPU stays free between toggles.
-
+```
 
 
 ## Author
