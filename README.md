@@ -14,11 +14,11 @@ A complete embedded systems learning and development repository documenting week
 ## Repository Structure
 
 ```
-├── include/       # Header files (.h)
-├── src/           # Source files (.c) + main.c
-├── week1/         # Week 1 exercises
-├── week2/         # Week 2 exercises
-├── week3/         # Week 3 exercises
+├── include/     
+├── src/          
+├── task1/         
+├── task2/         
+├── task3/         
 └── platformio.ini
 ```
 
